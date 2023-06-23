@@ -1,0 +1,13 @@
+<h2>Liste</h2>
+
+<ul>
+    <%for(let i=0; i < students.length; i++){%>
+        <li style="color: <%= students[i].age > 8 ? 'blue' : 'pink'%>">Nom : <%=students[i].name%>, Age : <%=students[i].age%></li>
+    <%}%>
+</ul>
+
+<% if(number > 4){%>
+    <p>C'est plus grand que 4</p>
+<%}else {%>
+    <p>C'est plus petit que 4</p>
+<%}%>
