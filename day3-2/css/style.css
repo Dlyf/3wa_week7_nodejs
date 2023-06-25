@@ -81,3 +81,16 @@ li {
 #edit {
     display: none;
 }
+
+#show-notif {
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+.hidden {
+	display: "none";
+}
+
+#notif-list {
+	
+}

@@ -9,7 +9,8 @@ const MongoDBClient = require('./database');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const messageRoutes = require('./routes/messageRoutes');
-const notificationRoutes = require('./routes/notificationRoutes');
+const notificationRoutes = require('./routes/notificationRoutes')
+const channelRoutes = require('./routes/channelRoutes')
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -25,18 +26,18 @@ app.use(bodyParser.json())
 
 io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
-
+    
     socket.on('disconnect', () => {
       console.log('user disconnected'+  socket.id);
     });
+  
 });
   
-  userRoutes(app);
-  authRoutes(app);
-  messageRoutes(app, io);
-  notificationRoutes(app);
-
-
+userRoutes(app);
+authRoutes(app);
+messageRoutes(app, io);
+notificationRoutes(app, io);
+channelRoutes(app);
 
 server.listen(port, ()=>{
     console.log('connecté au port '+port)

@@ -1,3 +1,20 @@
+export function getChannelByUser(user, token){
+    return fetch('http://localhost:19000/channelByUser/'+user._id, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': token
+        },
+    })
+    .then((response)=>{
+        return response.json();      
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+
 export function getMessagesByUser(user, token) {
     return fetch('http://localhost:19000/messageByUser/'+user._id, {
         method: 'GET',
@@ -16,14 +33,15 @@ export function getMessagesByUser(user, token) {
 }
 
 
-export function sendMessage(user, body, token) {
+export function sendMessage(user, body, channelId, token) {
     const userId1 = "6492ce03c29364279f5d025b";
     const userId2 = "6494034774968b23e7943228"
     console.log(user)
     const data = {
         senderUserId: user._id,
         receiverUserId: user._id === userId1 ? userId2 : userId1,
-        body: body
+        body: body,
+        channelId: channelId
     }
 
     console.log('data', data)

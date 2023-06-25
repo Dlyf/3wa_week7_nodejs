@@ -10,7 +10,8 @@ const messageSchema = new Mongoose.Schema({
     receiverUserId: {type: String, required: true},
     body: {type: String, required: true},
     creationDateTime: {type: Date, required: true},
-    lastUpdateDateTime: {type: Date, required: true}
+    lastUpdateDateTime: {type: Date, required: true},
+    channelId: {type: Mongoose.Schema.ObjectId, required: true},
 }, {collection: "message"})
 
 const MessageModel = Mongoose.model("Message", messageSchema);

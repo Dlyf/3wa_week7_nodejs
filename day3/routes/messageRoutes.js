@@ -1,14 +1,39 @@
 const Message = require('../models/message')
+const Notification = require('../models/notification')
+const User = require('../models/user')
+const Channel = require('../models/channel');
 const withAuth = require('../withAuth')
 
 function messageRoutes(app, io){
     app.post('/message/add', withAuth, async (req, res)=>{
+
+        let channelId = "";
+
+        if(req.body.channelId === null ) {
+            const data = {
+                user1Id: "6492ce03c29364279f5d025b",
+                user2Id: "6494034774968b23e7943228",
+                creationDateTime: new Date()
+            }
+            const channel = new Channel(data);
+            const resultChannel = await channel.save();
+
+            if(resultChannel.code) {
+                res.status(resultChannel.code).json(resultChannel);
+                return;
+            }
+             console.log("resultChannel", resultChannel)   
+             channelId = resultChannel._id
+        }
+
+
         const data = {
             senderUserId: req.body.senderUserId,
             receiverUserId:  req.body.receiverUserId,
             body: req.body.body,
             creationDateTime: new Date(),
-            lastUpdateDateTime: new Date()
+            lastUpdateDateTime: new Date(),
+            channelId: channelId
         }
 
         const message = new Message(data);
@@ -18,8 +43,34 @@ function messageRoutes(app, io){
             res.status(result.code).json({result})
             return;
         }
+
+        const user = await User.findOne({_id: req.body.senderUserId});
+
+        if(user.code) {
+            res.status(user.code).json({user})
+            return;
+        }
+
+        const dataNotification = {
+            actionUserId: req.body.senderUserId,
+            receiverUserId:  req.body.receiverUserId,
+            action: "sendMessage",
+            message: user.firstName+' vous a envoyé un message',
+            view: false,
+            creationDateTime: new Date()
+        }
+
+        const notification = new Notification(dataNotification);
+
+        const resultNotif = await notification.save();
+
+        if(resultNotif.code) {
+            res.status(resultNotif.code).json({resultNotif})
+            return;
+        }
+
         io.emit('newMessage', {receiverUserId: req.body.receiverUserId})
-        res.status(200).json({result})
+        res.status(200).json({result, resultNotif, channelId})
 
     })
 

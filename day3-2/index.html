@@ -10,6 +10,7 @@
 <body>
     <h2>Hello</h2>
     <p id="msg"></p>
+    
     <div id="logout">
         <h2>Connectez-vous</h2>
         <form>
@@ -31,9 +32,13 @@
     </div>
 
     <div id="logged">
+        
         <div>
             <p>Vous êtes connecté</p>
             <div id="userInfo">
+
+            </div>
+            <div id="channelList">
 
             </div>
             <button
@@ -41,8 +46,16 @@
             >
                 se Déconnecter
             </button>
+            <span id="show-notif">🛎️</span><span id="number-notif" class="hidden">0</span>
+            
         </div>
         <div>
+            <div id="notif-list" class="hidden">
+                <h3>Mes notifs</h3>
+                <ul>
+
+                </ul>
+            </div>
             <textarea id="createMessage">
 
             </textarea>
